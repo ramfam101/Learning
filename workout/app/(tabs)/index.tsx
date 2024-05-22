@@ -1,12 +1,13 @@
-import { Image, StyleSheet, Platform, View, Text } from 'react-native';
+import { Image, StyleSheet, Platform, View, Text, FlatList } from 'react-native';
 import exercises from "../../assets/data/exercises.json"
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { StatusBar } from 'expo-status-bar';
+import ExerciseListItem from '@/components/ExerciseListItem';
 
 export default function HomeScreen() {
-  const exercise = exercises[0];
   return (
     // <ParallaxScrollView
     //   headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -38,10 +39,13 @@ export default function HomeScreen() {
     // </ParallaxScrollView>
 
     <View style={styles.container}>
-      <View style={styles.exercise}>
-        <Text style={styles.exerciseName}>{exercise.name}</Text>
-        <Text style={styles.exerciseStuff}>{exercise.muscle.toUpperCase()} | {exercise.equipment.toUpperCase()}</Text>
-      </View>
+      <FlatList
+      data={exercises}
+      renderItem={({item}) => <ExerciseListItem item={item}/>}
+      keyExtractor={(item, index) => item.name +index}
+      contentContainerStyle={{gap: 5}}
+      />
+      <StatusBar style ="auto"/>
     </View>
   );
 }
@@ -52,31 +56,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'gainsboro',
     justifyContent: 'center',
     padding:10,
+    paddingTop: 70,
   },
-  imageContainer: {
-    bottom: 0,
-    left: 0,
-    width: '100%',
-    height: 250,
-  },
-  reactLogo: {
-    height: '85%',
-    width: '100%',
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-  exercise:{
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 10,
-    gap: 5,
-  },
-  exerciseName: {
-    fontSize: 20, 
-    fontWeight: '500'
-  },
-  exerciseStuff: {
-    color: 'dimgray',
-  }
+  
 });
